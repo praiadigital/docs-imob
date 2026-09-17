@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Docs Imob — a papelada da compra do imóvel, sem mistério</title>
+<meta name="description" content="Verificador de documentação imobiliária: o que exigir, onde emitir e custo de cada documento na compra do imóvel. Satélite da rede praia.digital">
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#eff6ff;color:#172554;min-height:100vh}
+header{padding:24px;text-align:center;background:linear-gradient(120deg,#1e40af,#3b82f6);color:#fff}
+nav a{color:#fde047;margin:0 8px;text-decoration:none;font-size:14px}
+.wrap{max-width:760px;margin:auto;padding:24px}
+.doc{background:#fff;border-radius:14px;padding:16px 20px;margin-bottom:12px;box-shadow:0 4px 14px rgba(30,64,175,.08);cursor:pointer}
+.doc .head{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.doc .head b{font-size:16px}
+.doc .det{display:none;margin-top:10px;font-size:14px;color:#334155;border-top:1px dashed #bfdbfe;padding-top:10px}
+.doc.aberto .det{display:block}
+.badge{border-radius:99px;padding:3px 12px;font-size:12px;font-weight:700;background:#dbeafe;color:#1d4ed8}
+.prog{height:10px;background:#dbeafe;border-radius:99px;overflow:hidden;margin:6px 0 18px}
+.prog div{height:100%;background:#1e40af;transition:width .3s}
+footer{padding:20px;text-align:center;font-size:13px}
+footer a{color:#1e40af}
+</style></head>
+<body>
+<header><h1>📄 Docs Imob</h1><p>Todo o checklist documental da compra do seu imóvel</p>
+<nav><a href="https://praia.digital">Praia Digital</a><a href="https://praia.digital/checklists-litoral">Checklists</a><a href="https://praia.digital/guia-comprador">Guia do Comprador</a><a href="https://praia.digital/apps">Todos os apps</a></nav></header>
+<div class="wrap">
+<div class="prog"><div id="bar"></div></div>
+<p id="status" style="text-align:center;font-weight:700"></p>
+<div id="docs"></div>
+<p style="text-align:center;margin-top:18px">💡 Some tudo: use a <a href="https://praia.digital/calculadora-custos">Calculadora de Custos</a> para o custo total da compra.</p>
+</div>
+<footer>Rede <a href="https://praia.digital">praia.digital</a> · <a href="https://praia.digital/contrato-temporada">Contrato de Temporada</a> · <a href="https://praia.digital/simulador-credito">Simulador de Crédito</a> · <a href="https://praia.digital/plano-litoral">Plano Litoral</a></footer>
+<script>
+const docs=[
+['Matrícula atualizada do imóvel','Cartório de Registro de Imóveis','~R$ 100','Essencial','Mostra dono real, ônus, hipotecas e penhoras. Peça com inteiro teor.'],
+['Certidão negativa de débitos federais (vendedor)','site da Receita Federal','grátis','Essencial','Comprova que o vendedor não deve à União — dívidas podem recair sobre o imóvel.'],
+['Certidões estaduais e trabalhistas','Tribunais de Justiça e do Trabalho','grátis–R$ 50','Essencial','Verificam ações que podem bloquear o imóvel.'],
+['IPTU quitado + certidão negativa municipal','Prefeitura da cidade','~R$ 40','Essencial','Dívida de IPTU é do imóvel, não do dono!'],
+['Declaração de quitação do condomínio','Síndico/administradora','grátis','Essencial','Condomínio em atraso vira dívida do novo dono.'],
+['Contrato de compra e venda','Advogado/despachante','R$ 500–2.000','Essencial','Registre condições, sinal e prazos. Nunca só de boca.'],
+['Escritura pública','Cartório de Notas','~1% do valor','Essencial','Documento oficial da transferência.'],
+['Registro no Cartório de Imóveis','RGI da comarca','~1% do valor','Essencial','Sem registro, o imóvel ainda não é seu perante a lei.'],
+['Habite-se / averbação da construção','Prefeitura / RGI','variável','Importante','Área construída irregular dificulta financiamento e revenda.'],
+['Laudo de avaliação (financiamento)','Engenheiro do banco','R$ 2.500–3.500','Financiamento','Obrigatório para crédito imobiliário.']];
+const KEY='docsimob';let st=JSON.parse(localStorage.getItem(KEY)||'{}');
+function draw(){let d=0;
+document.getElementById('docs').innerHTML=docs.map((x,i)=>{if(st[i])d++;return `<div class="doc" onclick="this.classList.toggle('aberto')"><div class="head"><span><input type="checkbox" ${st[i]?'checked':''} onclick="event.stopPropagation();st[${i}]=this.checked;localStorage.setItem('${KEY}',JSON.stringify(st));draw()"> <b>${x[0]}</b></span><span class="badge">${x[3]}</span></div><div class="det">📍 Onde: ${x[1]} · 💰 Custo: ${x[2]}<br>${x[4]}</div></div>`}).join('');
+bar.style.width=d/docs.length*100+'%';
+status.textContent=d===docs.length?'🎉 Documentação completa — bora pro cartório!':`${d}/${docs.length} documentos verificados · clique em cada um para detalhes`;}
+draw();
+</script></body></html>
